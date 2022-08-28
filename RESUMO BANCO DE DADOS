@@ -1,0 +1,555 @@
+RESUMO BANCO DE DADOS
+
+// mostrar todas as tabelas...
+SHOW TABLES;
+ex.:
+
++-----------------------------+
+| tables_in_<nome do arquivo> |
++-----------------------------+
+| FUNC                        |
+| AREA                        |
++-----------------------------+
+
+- - - - - - - - - -
+
+// mostrar detalhes de uma tabela...
+SELECT * FROM <nome da tabela>;
+
+ex.: SELECT * FROM FUNC;
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |
+| DANILO    | CEO        | 6500    | NULL     | 4     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |
++-----------+------------+---------+----------+-------+
+
+ex.: SELECT * FROM AREA;
+
++----------------------------+
+|            AREA            |
++-------+------------+-------+
+| SETOR | CARGO      | ANDAR |
++-------+------------+-------+
+| 3     | GERENTE    | 2     |
+| 1     | CAIXA      | 1     |
+| 2     | FINANCEIRO | 2     |
+| 3     | DIRETOR    | 3     |
+| 4     | CEO        | 3     |
+| 1     | ATENDENTE  | 1     |
++-------+------------+-------+
+
+- - - - - - - - - -
+
+// filtrando algumas colunas de uma tabela...
+SELECT <nome da coluna, nome da coluna, ...> FROM <nome da tabela>;
+
+ex.:
+SELECT NOME, SETOR FROM FUNC;
+ 
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+               +-----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |               | NOME      | SETOR |
++-----------+------------+---------+----------+-------+               +-----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |               | CLARA     | 3     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |               | REYNALDO  | 1     |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |   -------->   | ANA       | 2     |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |               | JOAO      | 3     |
+| DANILO    | CEO        | 6500    | NULL     | 4     |               | DANILO    | 4     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |               | ROSE      | 1     |
++-----------+------------+---------+----------+-------+               +-----------+-------+
+
+
+
+- - - - - - - - - -
+
+// filtrando um dado especifico de uma coluna especifica de uma tabela...
+SELECT * FROM <nome da tablea> WHERE <nome da coluna> <condição>;
+
+ex.:
+SELECT * FROM FUNC WHERE SALARIO >= 4000 ;
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+               +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |               | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+               +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |               | CLARA     | GERENTE    | 4500    | 250      | 3     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |               | ANA       | FINANCEIRO | 4000    | NULL     | 2     |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |   -------->   | JOAO      | DIRETOR    | 5200    | NULL     | 3     |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |               | DANILO    | CEO        | 6500    | NULL     | 4     |
+| DANILO    | CEO        | 6500    | NULL     | 4     |               +-----------+------------+---------+----------+-------+
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |               
++-----------+------------+---------+----------+-------+
+
+
+- - - - - - - - - -
+
+// TRÊS BLOCOS DE BUSCA: buscando tudo de uma tabela, (where)[1] que tenha algo especifico ou (OR)[2] algo de uma coluna que tenha uma clausula (nulo ou nao) ou (OR) algo de uma coluna em especifico e (AND) [3] algo de uma coluna em especifico...
+SELECT * FROM <nome da tabela> WHERE <nome da coluna> = <item da coluna> OR <nome da coluna> <clausula> OR <nome da coluna> = <item da coluna> AND <nome da coluna> = <item da coluna>;
+
+ex.:
+SELECT * FROM FUNC WHERE SALARIO >= 2500 OR COMISSAO IS NOT NULL AND SETOR = 1;
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+            +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |            | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+   ---->    +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |            | ROSE      | ATENDENTE  | 2500    | 400      | 1     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |            |-----------+------------+---------+----------+-------+
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |            
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |
+| DANILO    | CEO        | 6500    | NULL     | 4     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |
++-----------+------------+---------+----------+-------+
+
+
+- - - - - - - - - -
+
+//DOIS BLOCOS DE BUSCA: buscando tudo de uma tabela, (where) [1] que tenha algo especifico  ou (OR) algo de uma coluna que tenha uma clausula (nulo ou nao) ou (OR) algo de uma coluna em especifico e (AND) [2] algo de uma coluna em especifico...
+SELECT * FROM <nome da tabela> WHERE ( <nome da coluna> = <item da coluna> OR <nome da coluna> <clausula> OR <nome da coluna> = <item da coluna> ) AND <nome da coluna> = <item da coluna>;
+
+ex.:
+SELECT * FROM FUNC WHERE SALARIO > 2000 AND SETOR = 1;
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+            +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |            | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+   ---->    +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |            | ROSE      | ATENDENTE  | 2500    | 400      | 1     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |            |-----------+------------+---------+----------+-------+
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |            
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |
+| DANILO    | CEO        | 6500    | NULL     | 4     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |
++-----------+------------+---------+----------+-------+
+
+ex.:
+SELECT * FROM FUNC WHERE SALARIO > 2000 AND COMISSAO IS NOT NULL;
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+            +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |            | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+   ---->    +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |            | CLARA     | GERENTE    | 4500    | 250      | 3     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |            | ROSE      | ATENDENTE  | 2500    | 400      | 1     | 
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |            +-----------+------------+---------+----------+-------+
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |            
+| DANILO    | CEO        | 6500    | NULL     | 4     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |
++-----------+------------+---------+----------+-------+
+
+
+- - - - - - - - - -
+
+// alterando nome de UMA coluna..
+SELECT <nome atual da coluna> AS <novo nome da coluna> FROM <nome da tabela>; 
+
+ex.:
+SELECT ANDAR AS PAVTO FROM AREA;
+
++----------------------------+
+|            AREA            |
++-------+------------+-------+            +-------+------------+-------+
+| SETOR | CARGO      | ANDAR |            | SETOR | CARGO      | PAVT  |
++-------+------------+-------+            +-------+------------+-------+
+| 3     | GERENTE    | 2     |            | 3     | GERENTE    | 2     |
+| 1     | CAIXA      | 1     |   ----->   | 1     | CAIXA      | 1     |
+| 2     | FINANCEIRO | 2     |            | 2     | FINANCEIRO | 2     |
+| 3     | DIRETOR    | 3     |            | 3     | DIRETOR    | 3     |
+| 4     | CEO        | 3     |            | 4     | CEO        | 3     |
+| 1     | ATENDENTE  | 1     |            | 1     | ATENDENTE  | 1     |
++-------+------------+-------+            +-------+------------+-------+ 
+           
+
+- - - - - - - - - -
+
+// alterando nome de DUAS colunas...
+SELECT <nome atual da coluna> AS <novo nome da coluna> , <nome atual da coluna> AS <novo nome da coluna> FROM <nome da tabela>;
+
+ex.:
+SELECT ANDAR AS PAVTO, CARGO AS CARGOS FROM AREA;
+
++----------------------------+
+|            AREA            |
++-------+------------+-------+            +-------+------------+-------+
+| SETOR | CARGO      | ANDAR |            | SETOR | CARGOS     | PAVT  |
++-------+------------+-------+            +-------+------------+-------+
+| 3     | GERENTE    | 2     |            | 3     | GERENTE    | 2     |
+| 1     | CAIXA      | 1     |   ----->   | 1     | CAIXA      | 1     |
+| 2     | FINANCEIRO | 2     |            | 2     | FINANCEIRO | 2     |
+| 3     | DIRETOR    | 3     |            | 3     | DIRETOR    | 3     |
+| 4     | CEO        | 3     |            | 4     | CEO        | 3     |
+| 1     | ATENDENTE  | 1     |            | 1     | ATENDENTE  | 1     |
++-------+------------+-------+            +-------+------------+-------+ 
+
+- - - - - - - - - -
+
+// alterando nome de DUAS colunas e realizando um filtro...
+SELECT * FROM (<nome atual da coluna> AS <novo nome da coluna>) X WHERE <nome novo da coluna> <conidção '=', '<', ''>', ...> <item especifico>;
+
+ex.:
+SELECT * FROM ( SELECT ANDAR AS PAVTO, CARGO AS CARGOS FROM AREA) X PAVT = 3;
+
++----------------------------+
+|            AREA            |
++-------+------------+-------+            +-------+------------+-------+
+| SETOR | CARGO      | ANDAR |            | SETOR | CARGOS     | PAVT  |
++-------+------------+-------+            +-------+------------+-------+
+| 3     | GERENTE    | 2     |   ----->   | 3     | DIRETOR    | 3     |
+| 1     | CAIXA      | 1     |            | 4     | CEO        | 3     |
+| 2     | FINANCEIRO | 2     |            +-------+------------+-------+
+| 3     | DIRETOR    | 3     |
+| 4     | CEO        | 3     |
+| 1     | ATENDENTE  | 1     |
++-------+------------+-------+
+
+
+- - - - - - - - - -
+
+// CONCATENANDO: juntando duas informações numa tabela virtual...
+SELECT CONCAT (<nome de uma coluna>, 'explicação', <nome da outra coluna>) AS <nome da tabela virtual> FROM <nome da tabela>;
+
+ex.:
+SELECT CONCAT (NOME, ' tem o cargo de ', CARGO) AS EXPLICANDO FROM FUNC;
+
++-----------------------------------------------------+                 
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+                 +------------------------------------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |                 | EXPLICANDO                         |
++-----------+------------+---------+----------+-------+                 +------------------------------------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |-                | CLARA tem o cargo de GERENTE       |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |-  --------->    | REYNALDO tem o cargo de CAIXA      |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |-                | ANA tem o cargo de FINANCEIRO      |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |                 +------------------------------------+
+| DANILO    | CEO        | 6500    | NULL     | 4     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |
++-----------+------------+---------+----------+-------+
+
+
+- - - - - - - - - -
+
+// CONCATENANDO COM CONDIÇÃO: juntando duas informações numa tabela virtual com condição...
+SELECT CONCAT (<nome de uma coluna>, 'explicação', <nome da outra coluna>) AS <nome da tabela virtual> FROM <nome da tabela> WHERE <nome de uma coluna> <condição>;
+
+ex.:
+SELECT CONCAT (NOME, ' tem o cargo de ', CARGO) AS EXPLICANDO FROM FUNC WHERE SALARIO > 5000;
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+              +------------------------------------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |              | EXPLICANDO                         |
++-----------+------------+---------+----------+-------+              +------------------------------------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |              | JOAO tem o cargo de DIRETOR        |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   ------->   | DANILO tem o cargo de CEO          |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |              +------------------------------------+
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     | -
+| DANILO    | CEO        | 6500    | NULL     | 4     | -
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |
++-----------+------------+---------+----------+-------+
+
+
+- - - - - - - - - -
+
+//CONDIÇÃO 'IF ELSE': usando IF ELSE para mostrar um resultado especifico...
+SELECT <nome de uma coluna>, <nome da outra coluna>, CASE WHEN <nome da coluna> <condição> THEN '<mensagem>' WHEN <nome de uma coluna> <condição> THEN '<mensagem>' ELSE '<mensagem>' END AS <nome da nova coluna> FROM <nome da tabela>;
+
+ex.:
+SELECT NOME, SALARIO, CASE WHEN SALARIO <= 2000 THEN 'SALARIO BAIXO' WHEN SALARIO >= 5000 THEN 'SALARIO ALTO' ELSE 'SALARIO NORMAL' END AS SITUACAO FROM FUNC;
+
++-----------------------------------------------------+            +----------------------------------------------------------------------+
+|                          FUNC                       |            |                                  FUNC                                |
++-----------+------------+---------+----------+-------+            +-----------+------------+---------+----------+-------+----------------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |            | NOME      | CARGO      | SALARIO | COMISSAO | SETOR | SITUACAO       |
++-----------+------------+---------+----------+-------+            +-----------+------------+---------+----------+-------+----------------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |  ------->  | CLARA     | GERENTE    | 4500    | 250      | 3     | SALARIO NORMAL |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |            | REYNALDO  | CAIXA      | 1500    | 500      | 1     | SALARIO BAIXO  |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |            | ANA       | FINANCEIRO | 4000    | NULL     | 2     | SALARIO NORMAL |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |            | JOAO      | DIRETOR    | 5200    | NULL     | 3     | SALARIO ALTO   |
+| DANILO    | CEO        | 6500    | NULL     | 4     |            | DANILO    | CEO        | 6500    | NULL     | 4     | SALARIO ALTO   |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |            | ROSE      | ATENDENTE  | 2500    | 400      | 1     | SALARIO BAIXO  |
++-----------+------------+---------+----------+-------+            +-----------+------------+---------+----------+-------+----------------+
+
+
+- - - - - - - - - -
+
+//LIMITANDO O Nº DE LINHAS: mostrando uma quantidade especifica de linhas...
+SELECT * FROM <nome da tabela> limit <nº maximo de linhas>;
+
+ex.:
+SELECT * FROM FUNC limit 3;
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |              | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |              | CLARA     | GERENTE    | 4500    | 250      | 3     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   ------->   | REYNALDO  | CAIXA      | 1500    | 500      | 1     |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |              | ANA       | FINANCEIRO | 4000    | NULL     | 2     |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |              +-----------+------------+---------+----------+-------+
+| DANILO    | CEO        | 6500    | NULL     | 4     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |
++-----------+------------+---------+----------+-------+
+
+
+- - - - - - - - - -
+
+//LIMITANDO O Nº DE LINHAS COM DADOS ALEATÓRIOS: mostrando uma quantidade especifica de linhas de com dados especificos...
+SELECT <nome da coluna>, <nome de outra coluna> FROM <nome da tabela> ORDER BY RAND() limit <nº maximo de linhas>;
+
+ex.:
+SELECT NOME, CARGO FROM FUNC ORDER BY RAND() limit 3;
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |              | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |              | ANA       | FINANCEIRO | 4000    | NULL     | 2     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   ------->   | ROSE      | ATENDENTE  | 2500    | 400      | 1     |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |              | DANILO    | CEO        | 6500    | NULL     | 4     |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |              +-----------+------------+---------+----------+-------+
+| DANILO    | CEO        | 6500    | NULL     | 4     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |
++-----------+------------+---------+----------+-------+
+
+
+- - - - - - - - - -
+
+//
+SELECT * FROM <nome da tabela> WHERE <nome da coluna> <condição>;
+
+ex.:
+SELECT * FROM FUNC WHERE COMISSAO IS NULL;
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |              | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |              | ANA       | FINANCEIRO | 4000    | NULL     | 2     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   ------->   | JOAO      | DIRETOR    | 5200    | NULL     | 3     | 
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |              | DANILO    | CEO        | 6500    | NULL     | 4     |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |              +-----------+------------+---------+----------+-------+
+| DANILO    | CEO        | 6500    | NULL     | 4     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |
++-----------+------------+---------+----------+-------+
+
+ex.:
+SELECT * FROM FUNC WHERE COMISSAO IS NOT NULL;
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |              | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |              | CLARA     | GERENTE    | 4500    | 250      | 3     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   ------->   | REYNALDO  | CAIXA      | 1500    | 500      | 1     | 
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |              | ROSE      | ATENDENTE  | 2500    | 400      | 1     |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |              +-----------+------------+---------+----------+-------+
+| DANILO    | CEO        | 6500    | NULL     | 4     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |
++-----------+------------+---------+----------+-------+
+
+- - - - - - - - - -
+
+//SUBSTITUINDO O 'NULL'... 
+SELECT COALESCE (<nome da coluna>, <novo valor no lugar de 'null'>) FROM <nome da tabela>;
+
+ex.:
+SELECT COALESCE (COMISSAO, 0) FROM FUNC;
+
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |              | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |              | CLARA     | GERENTE    | 4500    | 250      | 3     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   ------->   | REYNALDO  | CAIXA      | 1500    | 500      | 1     | 
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |              | ANA       | FINANCEIRO | 4000    | 0        | 2     |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |              | JOAO      | DIRETOR    | 5200    | 0        | 3     |
+| DANILO    | CEO        | 6500    | NULL     | 4     |              | DANILO    | CEO        | 6500    | 0        | 4     |            
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |              | ROSE      | ATENDENTE  | 2500    | 400      | 1     |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+
+- - - - - - - - - -
+
+//ORDER BY: colocando em ordem (crescente ou decrescente)...
+SELECT <nome de uma coluna>, <nome de uma coluna> FROM <nome da tabela> order by <nome de uma coluna de referencia> <asc(crescente) ou desc(decrescente)>;
+
+ex.:
+SELECT NOME, CARGO FROM FUNC order by SALARIO ASC; (O 'ASC' NAO É NECESSARIO PARA ORDENAR EM ORDEM CRESCENTE)
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |              | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |              | REYNALDO  | CAIXA      | 1500    | 500      | 1     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   ------->   | ROSE      | ATENDENTE  | 2500    | 400      | 1     |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |              | ANA       | FINANCEIRO | 4000    | NULL     | 2     |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |              | CLARA     | GERENTE    | 4500    | 250      | 3     |
+| DANILO    | CEO        | 6500    | NULL     | 4     |              | JOAO      | DIRETOR    | 5200    | NULL     | 3     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |              | DANILO    | CEO        | 6500    | NULL     | 4     |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+
+
+
+ex.: SELECT NOME, CARGO FROM FUNC order by SALARIO DESC;
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |              | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |              | DANILO    | CEO        | 6500    | NULL     | 4     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   ------->   | JOAO      | DIRETOR    | 5200    | NULL     | 3     |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |              | CLARA     | GERENTE    | 4500    | 250      | 3     |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |              | ANA       | FINANCEIRO | 4000    | NULL     | 2     |
+| DANILO    | CEO        | 6500    | NULL     | 4     |              | ROSE      | ATENDENTE  | 2500    | 400      | 1     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |              | REYNALDO  | CAIXA      | 1500    | 500      | 1     |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+ 
+
+
+- - - - - - - - - -
+
+//ORDER BY: colocando em ordem atraves da coluna X (crescente ou decrescente)...
+SELECT <nome de uma coluna>, <nome de uma coluna> FROM <nome da tabela> order by <numero da coluna> asc(crescente) ou desc(decrescente)>;
+
+ex.:
+SELECT NOME, CARGO FROM FUNC order by 3 DESC; 
+(colocar em ordem descrecente a coluna 3"SALARIO");
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |              | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |              | DANILO    | CEO        | 6500    | NULL     | 4     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   ------->   | JOAO      | DIRETOR    | 5200    | NULL     | 3     |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |              | CLARA     | GERENTE    | 4500    | 250      | 3     |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |              | ANA       | FINANCEIRO | 4000    | NULL     | 2     |
+| DANILO    | CEO        | 6500    | NULL     | 4     |              | ROSE      | ATENDENTE  | 2500    | 400      | 1     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |              | REYNALDO  | CAIXA      | 1500    | 500      | 1     |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+ 
+
+ex.: 
+SELECT NOME, CARGO FROM FUNC order by 1 DESC; 
+(colocar em ordem descrecente a coluna 1"NOME");
+
++-----------------------------------------------------+
+|                       FUNC                          |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |              | NOME      | CARGO      | SALARIO | COMISSAO | SETOR |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+
+| CLARA     | GERENTE    | 4500    | 250      | 3     |              | ROSE      | ATENDENTE  | 2500    | 400      | 1     |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   ------->   | REYNALDO  | CAIXA      | 1500    | 500      | 1     |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |              | JOAO      | DIRETOR    | 5200    | NULL     | 3     |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |              | DANILO    | CEO        | 6500    | NULL     | 4     |
+| DANILO    | CEO        | 6500    | NULL     | 4     |              | CLARA     | GERENTE    | 4500    | 250      | 3     |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |              | ANA       | FINANCEIRO | 4000    | NULL     | 2     |
++-----------+------------+---------+----------+-------+              +-----------+------------+---------+----------+-------+ 
+
+
+- - - - - - - - - -
+
+***NAO ENTENDI A LOGICA!...
+//
+SELECT <nome de uma coluna>, <nome de outra coluna> FROM <nome da coluna> WHERE <nome da coluna referencia> UNION ALL SELECT <mensagem no espaço>,<mensagem no outro espaço> FROM <nome da tabela que var ser agregada> UNION ALL SELECT '<nome de uma coluna>', <nome de outra coluna> FROM <nome da coluna>;
+
+
+ex.:
+SELECT NOME, SETOR FROM FUNC WHERE SETOR = 3 UNION ALL SELECT '-------', NULL FROM TABELA1 UNION ALL SELECT CARGO, SETOR FROM AREA;
+
++-----------------------------------------------------+       +----------------------------+
+|                        FUNC                         |       |            AREA            |         +------------+---------+
++-----------+------------+---------+----------+-------+       +-------+------------+-------+         | NOME       | SETOR   |
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |       | SETOR | CARGO      | ANDAR |         +------------+---------+
++-----------+------------+---------+----------+-------+       +-------+------------+-------+         | CLARA      | 3       |
+| CLARA     | GERENTE    | 4500    | 250      | 3     |       | 3     | GERENTE    | 2     |         | JOAO       | 3       |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   +   | 1     | CAIXA      | 1     |  ---->  | -------    | NULL    | 
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |       | 2     | FINANCEIRO | 2     |         | CAIXA      | 1       | 
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |       | 3     | DIRETOR    | 3     |         | FINANCEIRO | 2       |
+| DANILO    | CEO        | 6500    | NULL     | 4     |       | 4     | CEO        | 3     |         | GERENTE    | 3       |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |       | 1     | ATENDENTE  | 1     |         | CEO        | 4       |
++-----------+------------+---------+----------+-------+       +-------+------------+-------+         +------------+---------+
+
+
+- - - - - - - - - -
+
+//uni duas tabelas atraves de uma coluna em comum e nao repete as mesmas informações...
+SELECT <nome da coluna> FROM <nome da tabela> UNION SELECT <nome da coluna> FROM <nome da tabela>;
+
+ex.:
+SELECT SETOR FROM FUNC UNION SELECT SETOR FROM AREA
+
++-----------------------------------------------------+       +----------------------------+         +---------+
+|                        FUNC                         |       |            AREA            |         | SETOR   |
++-----------+------------+---------+----------+-------+       +-------+------------+-------+         +---------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |       | SETOR | CARGO      | ANDAR |         | 1       |
++-----------+------------+---------+----------+-------+       +-------+------------+-------+  ---->  | 2       |
+| CLARA     | GERENTE    | 4500    | 250      | 3     |       | 3     | GERENTE    | 2     |         | 3       |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   +   | 1     | CAIXA      | 1     |         | 4       |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |       | 2     | FINANCEIRO | 2     |         +---------+
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |       | 3     | DIRETOR    | 3     |         
+| DANILO    | CEO        | 6500    | NULL     | 4     |       | 4     | CEO        | 3     |         
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |       | 1     | ATENDENTE  | 1     |         
++-----------+------------+---------+----------+-------+       +-------+------------+-------+   
+
+//uni duas tabelas atraves de uma coluna em comum, permitindo as mesmas informações...
+SELECT <nome da coluna> FROM <nome da tabela> UNION ALL SELECT <nome da coluna> FROM <nome da tabela>;
+
+ex.:
+SELECT SETOR FROM FUNC UNION ALL SELECT SETOR FROM AREA
+
++-----------------------------------------------------+       +----------------------------+         +---------+
+|                        FUNC                         |       |            AREA            |         | SETOR   |
++-----------+------------+---------+----------+-------+       +-------+------------+-------+         +---------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |       | SETOR | CARGO      | ANDAR |         | 3       |
++-----------+------------+---------+----------+-------+       +-------+------------+-------+  ---->  | 1       |
+| CLARA     | GERENTE    | 4500    | 250      | 3     |       | 3     | GERENTE    | 2     |         | 2       |
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   +   | 1     | CAIXA      | 1     |         | 3       |
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |       | 2     | FINANCEIRO | 2     |         | 4       |
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |       | 3     | DIRETOR    | 3     |         | 1       |
+| DANILO    | CEO        | 6500    | NULL     | 4     |       | 4     | CEO        | 3     |         | 3       |
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |       | 1     | ATENDENTE  | 1     |         | 1       |
++-----------+------------+---------+----------+-------+       +-------+------------+-------+         | 2       |
+ 																									 | 3       |
+ 																									 | 4       |
+ 																									 | 1       |
+ 																									 +---------+
+- - - - - - - - - - -
+
+//
+SELECT <letra para abreviação da tabela>.<nome da coluna>, <letra para abreviação da tabela>.<nome da coluna> FROM <nome da tabela> <letra para abreviação da tabela> <nome da tabela> <letra para abreviação da tabela> WHERE <letra para abreviação da tabela>.<nome da coluna> = <letra para abreviação da tabela>.<nome da coluna> AND <letra para abreviação da tabela>.<nome da coluna> <condição>;
+
+ex.:
+SELECT f.NOME, a.SALARIO FROM FUNC f, AREA a WHERE f.SETOR = a.SETOR AND f.SETOR = 3;
+
++-----------------------------------------------------+       +----------------------------+         +---------------------+
+|                        FUNC                         |       |            AREA            |         | NOME      | SALARIO |
++-----------+------------+---------+----------+-------+       +-------+------------+-------+         +-----------+---------+
+| NOME      | CARGO      | SALARIO | COMISSAO | SETOR |       | SETOR | CARGO      | ANDAR |         | CLARA     | 4500    |
++-----------+------------+---------+----------+-------+       +-------+------------+-------+  ---->  | JOAO      | 5200    |
+| CLARA     | GERENTE    | 4500    | 250      | 3     |       | 3     | GERENTE    | 2     |         +-----------+---------+
+| REYNALDO  | CAIXA      | 1500    | 500      | 1     |   +   | 1     | CAIXA      | 1     |         
+| ANA       | FINANCEIRO | 4000    | NULL     | 2     |       | 2     | FINANCEIRO | 2     |         
+| JOAO      | DIRETOR    | 5200    | NULL     | 3     |       | 3     | DIRETOR    | 3     |         
+| DANILO    | CEO        | 6500    | NULL     | 4     |       | 4     | CEO        | 3     |         
+| ROSE      | ATENDENTE  | 2500    | 400      | 1     |       | 1     | ATENDENTE  | 1     |         
++-----------+------------+---------+----------+-------+       +-------+------------+-------+  
+
+
